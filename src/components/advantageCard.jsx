@@ -15,7 +15,6 @@ const CardWrap = styled.div`
   background: ${props => props.theme.secondaryColor};
   color: ${props => props.theme.themeWhite};
   padding: 1.25rem;
-  border-radius: 20px;
 
   .icon {
     font-size: 2rem;
@@ -25,6 +24,10 @@ const CardWrap = styled.div`
   h3 {
     font-size: 1rem;
     margin: 0.35rem 0;
+  }
+
+  p {
+    margin-bottom: 0;
   }
 
   &:nth-of-type(even) {

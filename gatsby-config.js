@@ -2,10 +2,10 @@ require("dotenv").config()
 
 module.exports = {
   siteMetadata: {
-    title: `Huskx`,
+    title: `Claybeau`,
     description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `Huskx`,
-    siteUrl: `https://huskx.netlify.app/`,
+    author: `Claybeau`,
+    siteUrl: `https://claybeau.netlify.app/`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -52,8 +52,8 @@ module.exports = {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
         fonts: [
-          `Lora\:300,400,600`,
-          `Alegreya\:400,600`, // you can also specify font weights and styles
+          `playfair display\:300,400,600`,
+          `muli\:400,600,700`, // you can also specify font weights and styles
         ],
         display: "swap",
       },

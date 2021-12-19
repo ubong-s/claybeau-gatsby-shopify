@@ -28,7 +28,7 @@ export default IndexPage
 export const query = graphql`
   {
     products: allShopifyProduct(
-      sort: { fields: publishedAt, order: ASC }
+      sort: { fields: publishedAt, order: DESC }
       limit: 4
     ) {
       nodes {

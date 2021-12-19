@@ -21,11 +21,13 @@
     "gatsby-source-shopify": "^6.3.0",
     "gatsby-transformer-sharp": "^4.3.0",
     "isomorphic-fetch": "^3.0.0",
+    "lodash.isequal": "^4.5.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet": "^6.1.0",
     "react-icons": "^4.3.1",
+    "react-scroll": "^1.8.4",
     "shopify-buy": "^2.13.0",
     "styled-components": "^5.3.3"
   },

@@ -3,8 +3,7 @@ import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa"
 
 export const menuLinks = [
   { title: "Home", path: "/" },
-  { title: "Products", path: "/products" },
-  { title: "About Us", path: "/about-us" },
+  { title: "Catalog", path: "/products" },
   { title: "Contact", path: "/contact-us" },
 ]
 
