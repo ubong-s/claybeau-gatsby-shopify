@@ -14,7 +14,7 @@ export default function Products({
   return (
     <Layout>
       <Seo title="All Products" />
-      <Filters />
+      {/* <Filters /> */}
       <ProductListing products={products.nodes} />
       <Pagination
         productPages={productPages}

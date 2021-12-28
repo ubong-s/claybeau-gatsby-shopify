@@ -13,6 +13,7 @@ exports.createPages = async ({ graphql, actions }) => {
           id
           handle
         }
+        collections: distinct(field: productType)
       }
     }
   `)
@@ -28,8 +29,8 @@ exports.createPages = async ({ graphql, actions }) => {
   const productPages = Math.ceil(products.length / productsPerPage)
 
   products.forEach((product, index) => {
-    const previous = index === 0 ? null : blogs[index - 1]
-    const next = index === blogs.length - 1 ? null : blogs[index + 1]
+    const previous = index === 0 ? null : products[index - 1]
+    const next = index === products.length - 1 ? null : products[index + 1]
 
     createPage({
       path: `/products/${product.handle}`,
@@ -43,17 +44,42 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   })
 
-  // Create Product Page
-  Array.from({ length: productPages }).forEach((_, i) => {
+  // collections
+  const collections = result.data.allShopifyProduct.collections
+  collections.forEach((collection, index) => {
+    // craete custom slug for collections
+    let tempCollection = collection.toLowerCase().split("")
+    let slug = []
+    for (let i = 0; i < tempCollection.length; i++) {
+      if (tempCollection[i] === " ") {
+        tempCollection[i] = "-"
+      }
+      if (tempCollection[i] === "&") {
+        tempCollection[i] = "and"
+      }
+      slug.push(tempCollection[i])
+    }
+    slug = slug.join("")
     createPage({
-      path: i === 0 ? `/products` : `/products/${i + 1}`,
-      component: path.resolve(`./src/templates/products.jsx`),
+      path: `/products/${slug}`,
+      component: path.resolve(`./src/templates/collections.jsx`),
       context: {
-        limit: productsPerPage,
-        skip: i * productsPerPage,
-        productPages,
-        currentPage: i + 1,
+        collection,
       },
     })
   })
+
+  // Create Product Page
+  // Array.from({ length: productPages }).forEach((_, i) => {
+  //   createPage({
+  //     path: i === 0 ? `/products` : `/products/${i + 1}`,
+  //     component: path.resolve(`./src/templates/products.jsx`),
+  //     context: {
+  //       limit: productsPerPage,
+  //       skip: i * productsPerPage,
+  //       productPages,
+  //       currentPage: i + 1,
+  //     },
+  //   })
+  // })
 }

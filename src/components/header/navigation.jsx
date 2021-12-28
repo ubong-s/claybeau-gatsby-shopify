@@ -6,12 +6,17 @@ import { useGlobalContext } from "../../context/globalContext"
 import { theme } from "../../styles/globalStyle"
 
 export default function Navigation() {
-  const { menuOpen } = useGlobalContext()
+  const { menuOpen, closeMenu } = useGlobalContext()
 
   return (
     <NavWrap menuOpen={menuOpen}>
       {menuLinks.map((link, index) => (
-        <Link to={link.path} key={index} activeClassName="active">
+        <Link
+          to={link.path}
+          key={index}
+          activeClassName="active"
+          onClick={closeMenu}
+        >
           {link.title}
         </Link>
       ))}
@@ -34,7 +39,7 @@ const NavWrap = styled.nav`
   z-index: 100;
   transition: ${theme.misc.transitionEase};
   transform: ${({ menuOpen }) =>
-    menuOpen ? `translateY(0)` : `translateX(100vw)`};
+    menuOpen ? `translateX(0)` : `translateX(-100vw)`};
   box-shadow: ${theme.misc.shadow};
   border-bottom-left-radius: ${theme.roundings.medium};
   border-bottom-right-radius: ${theme.roundings.medium};
@@ -44,7 +49,7 @@ const NavWrap = styled.nav`
     padding-left: 1rem;
     margin: 1rem 0;
     color: ${theme.colors.secondary};
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-family: ${theme.fonts.primary};
   }
 

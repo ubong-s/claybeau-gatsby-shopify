@@ -8,7 +8,13 @@ export default function FeaturedProducts({ products = [] }) {
       <Container>
         <FeaturedProductsInner>
           {products.map((p, index) => (
-            <ProductCard product={p} key={p.id} eager={index === 0} />
+            <ProductCard
+              product={p}
+              key={p.id}
+              eager={index === 0}
+              hideDesc="true"
+              normalSize="true"
+            />
           ))}
         </FeaturedProductsInner>
       </Container>

@@ -71,6 +71,7 @@ const dimensions = {
     mobile: 95,
     desktop: 85,
   },
+  cartWidthDesktop: "400px",
   maxWidth: "1600px",
 }
 
@@ -128,14 +129,27 @@ const GlobalStyle = createGlobalStyle`
          padding: 4rem 0;
       }
    }
-  
+
+   .generic-button {
+     cursor: pointer;
+     font-family: ${theme.fonts.secondary};
+      font-weight: ${theme.weights.bold};
+      background: ${theme.colors.primary};
+      color: ${theme.colors.secondary};
+      border-radius: ${theme.roundings.small};
+      border: none;
+      outline: none;
+      transition: ${theme.misc.transitionEase};
+      
+      
+   }
 
    .small-btn {
       background: none;
       outline: none;
       border: none;
       cursor: pointer;
-      font-size: 1.5rem;
+      font-size: 2rem;
       color: ${theme.colors.secondary};
    }
 `

@@ -40,6 +40,7 @@ export default function DesktopProductImages({ images, title }) {
             smooth={true}
             offset={-150}
             duration={300}
+            activeclassname="active"
           >
             <GatsbyImage
               objectFit="contain"
@@ -92,5 +93,9 @@ const ThumbnailImages = styled.div`
     border-radius: ${theme.roundings.large};
     overflow: hidden;
     cursor: pointer;
+  }
+
+  .active {
+    border: 3px solid ${theme.colors.primary};
   }
 `

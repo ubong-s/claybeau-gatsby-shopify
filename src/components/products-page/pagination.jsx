@@ -19,45 +19,47 @@ export default function Pagination({
     pages.push(i)
   }
 
-  console.log(pages)
-
   return (
-    <PaginationWrap>
-      <Container>
-        <PaginationInner>
-          <li>
-            {!isFirst && (
-              <Link to={`/${pageLink}/${prevPage}`} rel="prev">
-                ← Prev
-              </Link>
-            )}
-          </li>
-          <PageNumbers>
-            <ul>
-              {pages.map(p => {
-                return (
-                  <li key={p}>
-                    <Link
-                      to={p === 1 ? `/products` : `/products/${p}`}
-                      activeClassName="active"
-                    >
-                      {p}
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-          </PageNumbers>
-          <li>
-            {!isLast && (
-              <Link to={`/${pageLink}/${nextPage}`} rel="next">
-                Next →
-              </Link>
-            )}
-          </li>
-        </PaginationInner>
-      </Container>
-    </PaginationWrap>
+    <>
+      {productPages > 1 && (
+        <PaginationWrap>
+          <Container>
+            <PaginationInner>
+              <li>
+                {!isFirst && (
+                  <Link to={`/${pageLink}/${prevPage}`} rel="prev">
+                    ← Prev
+                  </Link>
+                )}
+              </li>
+              <PageNumbers>
+                <ul>
+                  {pages.map(p => {
+                    return (
+                      <li key={p}>
+                        <Link
+                          to={p === 1 ? `/products` : `/products/${p}`}
+                          activeClassName="active"
+                        >
+                          {p}
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </PageNumbers>
+              <li>
+                {!isLast && (
+                  <Link to={`/${pageLink}/${nextPage}`} rel="next">
+                    Next →
+                  </Link>
+                )}
+              </li>
+            </PaginationInner>
+          </Container>
+        </PaginationWrap>
+      )}
+    </>
   )
 }
 

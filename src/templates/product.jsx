@@ -14,12 +14,9 @@ import {
 import isEqual from "lodash.isequal"
 import { useStoreContext } from "../context/storeContext"
 import { formatPrice } from "../utils/formatPrice"
-import { breakpoints, dimensions, theme } from "../styles/globalStyle"
+import { breakpoints } from "../styles/globalStyle"
 
-export default function Product({
-  data: { product, suggestions },
-  pageContext,
-}) {
+export default function Product({ data: { product } }) {
   const {
     title,
     description,
@@ -29,12 +26,64 @@ export default function Product({
     priceRangeV2,
     variants,
     variants: [initialVariant],
-    price,
     options,
   } = product
 
+  const { client } = useStoreContext()
+
   const [variant, setVariant] = useState({ ...initialVariant })
   const [quantity, setQuantity] = useState(1)
+
+  const productVariant =
+    client.product.helpers.variantForOptions(product, variant) || variant
+
+  const [available, setAvailable] = useState(productVariant.availableForSale)
+
+  const checkAvailablity = React.useCallback(
+    productId => {
+      client.product.fetch(productId).then(fetchedProduct => {
+        const result =
+          fetchedProduct?.variants.filter(
+            variant => variant.id === productVariant.storefrontId
+          ) ?? []
+
+        if (result.length > 0) {
+          setAvailable(result[0].available)
+        }
+      })
+    },
+    [productVariant.storefrontId, client.product]
+  )
+
+  const selectOption = (index, event) => {
+    const value = event.target.dataset.value
+
+    if (value === "") {
+      return
+    }
+
+    const currentOptions = [...variant.selectedOptions]
+
+    currentOptions[index] = {
+      ...currentOptions[index],
+      value,
+    }
+
+    const selectedVariant = variants.find(variant => {
+      return isEqual(currentOptions, variant.selectedOptions)
+    })
+
+    setVariant({ ...selectedVariant })
+  }
+
+  useEffect(() => {
+    checkAvailablity(product.storefrontId)
+  }, [productVariant.storefrontId, checkAvailablity, product.storefrontId])
+
+  const price = formatPrice(
+    priceRangeV2.minVariantPrice.currencyCode,
+    variant.price
+  )
 
   const hasImages = images.length > 0
   const hasVariants = variants.length > 1
@@ -52,7 +101,17 @@ export default function Product({
         <Container>
           <GoBack />
           <SingleProductInner>
-            <ProductDetails {...product} />
+            <ProductDetails
+              {...product}
+              price={price}
+              hasVariants={hasVariants}
+              variant={variant}
+              selectOption={selectOption}
+              quantity={quantity}
+              setQuantity={setQuantity}
+              variantId={productVariant.storefrontId}
+              available={available}
+            />
             <DesktopProductImages {...product} /> {/* Desktop Images */}
           </SingleProductInner>
         </Container>
@@ -109,6 +168,7 @@ export const query = graphql`
         storefrontId
         title
         price
+        inventoryQuantity
         selectedOptions {
           name
           value

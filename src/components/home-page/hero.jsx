@@ -28,8 +28,6 @@ export default function Hero() {
         <HeroImage>
           <StaticImage
             src="../../images/hero-photo.png"
-            width={300}
-            height={300}
             quality={95}
             layout="fullWidth"
             formats={["auto", "webp", "avif"]}

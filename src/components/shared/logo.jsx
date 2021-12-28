@@ -1,32 +1,24 @@
 import React from "react"
-import PropTypes from "prop-types"
 import { Link } from "gatsby"
 import styled from "styled-components"
-import { theme, breakpoints } from "../../styles/globalStyle"
 
-export default function Logo({ white }) {
+export default function Logo() {
   return (
-    <LogoLink
-      to="/"
-      white="false"
-      className={white === "true" ? "white-logo" : undefined}
-    >
-      Huskx
+    <LogoLink to="/">
+      <svg width="30px" height="30px" viewBox="-14 -14 50 50">
+        <desc>Created with Lunacy</desc>
+        <path
+          id="logo"
+          fill="#1B2437"
+          d="M36.077,12.24h0.03v-26.348H11C-2.866-14.107-14.107-2.866-14.107,11S-2.866,36.107,11,36.107
+            C24.449,36.107,35.43,25.531,36.077,12.24z M-9.923,11C-9.923-0.555-0.555-9.923,11-9.923h20.922V8.056H8.908v23.763
+            C-1.665,30.77-9.923,21.848-9.923,11z M31.887,12.24c-0.6,10.281-8.628,18.571-18.796,19.578V12.24H31.887z"
+        />
+      </svg>
     </LogoLink>
   )
 }
 
 const LogoLink = styled(Link)`
-  font-size: ${theme.sizes.medium};
-  font-family: ${theme.fonts.primary};
-  font-weight: ${theme.weights.semiBold};
-  color: ${theme.colors.secondary};
-
-  &.white-logo {
-    color: ${theme.colors.white};
-  }
-
-  @media screen and (min-width: ${breakpoints.desktop}px) {
-    font-size: ${theme.sizes.xlarge};
-  }
+  line-height: 0;
 `

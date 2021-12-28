@@ -4,29 +4,33 @@ import { graphql, Link } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
 import styled from "styled-components"
 import { breakpoints, theme } from "../../styles/globalStyle"
+import { useFilterContext } from "../../context/filterContext"
 
-export default function ProductCard({ product, eager }) {
-  const { id, title, featuredImage, handle, vendor, priceRangeV2 } = product
+export default function ProductCard({ product, eager, hideDesc, normalSize }) {
+  const { listView } = useFilterContext()
+  const { title, description, featuredImage, handle, priceRangeV2 } = product
 
   const price = formatPrice(
     priceRangeV2.minVariantPrice.currencyCode,
     priceRangeV2.minVariantPrice.amount
   )
 
-  console.log(handle)
-
   return (
     <ProductWrap
       to={`/products/${handle}`}
       aria-label={`View ${title} product page`}
+      className={listView && "list-view"}
     >
       <GatsbyImage
         image={featuredImage.gatsbyImageData}
         alt={title}
         className="gatsby-image"
       />
-      <ProductInfo>
-        <h2 className="title">{title}</h2>
+      <ProductInfo className={listView && "list-view"}>
+        <h2 className={normalSize ? "title normal" : "title"}>{title}</h2>
+        {(!hideDesc || listView) && (
+          <p className="description">{description.substring(0, 100)}...</p>
+        )}
         <div className="price">{price}</div>
       </ProductInfo>
     </ProductWrap>
@@ -43,22 +47,23 @@ const ProductWrap = styled(Link)`
   .gatsby-image {
     position: relative;
     overflow: hidden;
-    margin-bottom: 0.75rem;
+    object-fit: cover;
+    line-height: 0;
+  }
 
-    /* &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0),
-        rgba(255, 255, 255, 0),
-        rgba(255, 255, 255, 1)
-      );
-    } */
+  &.list-view {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+
+    .gatsby-image {
+    }
+  }
+
+  @media screen and (min-width: ${breakpoints.desktop}px) {
+    &.list-view {
+      grid-template-columns: 1fr 2fr;
+      gap: 0.5rem;
+    }
   }
 `
 const ProductInfo = styled.div`
@@ -69,17 +74,43 @@ const ProductInfo = styled.div`
     margin-bottom: 0.35rem;
   }
 
+  .description {
+    display: none;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
   .price {
     font-family: ${theme.fonts.primary};
     font-size: ${theme.sizes.xlarge};
+    color: ${theme.colors.secondary};
     font-weight: 600;
   }
 
+  &.list-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .description {
+      display: block;
+    }
+  }
+
   @media screen and (min-width: ${breakpoints.desktop}px) {
-    padding: 0.75rem 1.5rem 1rem;
+    padding: 1rem 1.25rem 1rem;
 
     .title {
-      font-size: ${theme.headings.normal};
+      font-size: ${theme.headings.large};
+
+      &.normal {
+        font-size: ${theme.headings.normal};
+      }
+    }
+
+    .description {
+      display: block;
+      font-size: 1rem;
     }
 
     .price {
@@ -93,6 +124,7 @@ export const query = graphql`
     id
     title
     handle
+    description
     featuredImage {
       gatsbyImageData(
         layout: FULL_WIDTH

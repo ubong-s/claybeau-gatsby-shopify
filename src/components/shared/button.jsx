@@ -11,7 +11,7 @@ export default function Button({
 }) {
   return (
     <ButtonWrap type="button" buttonColor={buttonColor} buttonType={buttonType}>
-      <Link to={url}>{title}</Link>
+      {url ? <Link to={url}>{title}</Link> : title}
     </ButtonWrap>
   )
 }
@@ -31,6 +31,8 @@ const ButtonWrap = styled.button`
   transition: ${theme.misc.transitionEase};
   text-transform: capitalize;
   letter-spacing: 1.5px;
+  color: ${({ buttonType, buttonColor }) =>
+    buttonType === "outline" ? buttonColor : `${theme.colors.white}`};
 
   a {
     color: ${({ buttonType, buttonColor }) =>
@@ -38,22 +40,7 @@ const ButtonWrap = styled.button`
   }
 
   &:hover {
-    background-color: ${({ buttonType, buttonColor }) =>
-      buttonType === "outline" ? buttonColor : "transparent"};
-
-    a {
-      color: ${({ buttonType, buttonColor }) => {
-        if (buttonType === "outline") {
-          return `${theme.colors.white}`
-        }
-        if (
-          buttonType === "outline" &&
-          buttonColor === `${theme.colors.white}`
-        ) {
-          return `${theme.colors.secondary}`
-        }
-      }};
-    }
+    opacity: 0.9;
   }
 
   @media screen and (min-width: ${breakpoints.desktop}px) {

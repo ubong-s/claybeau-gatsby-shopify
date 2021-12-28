@@ -7,7 +7,7 @@ export default function GoBackDesktop() {
   return (
     <GoBackWrap>
       <Button type="button" onClick={() => navigate(-1)}>
-        Back to Products
+        {"<<"} Back to Products
       </Button>
     </GoBackWrap>
   )
@@ -18,21 +18,22 @@ const GoBackWrap = styled.div`
 
   @media screen and (min-width: ${breakpoints.desktop}px) {
     display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
   }
 `
 
 const Button = styled.button`
-  padding: 1rem;
-  border-radius: ${theme.roundings.large};
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: none;
   outline: none;
   border: none;
-  background: ${theme.colors.white};
   color: ${theme.colors.secondary};
   font-weight: ${theme.weights.semiBold};
   font-family: ${theme.fonts.secondary};
-  font-size: 1.1rem;
-  cursor: pointer;
+  transition: ${theme.misc.transitionEase};
+  margin-bottom: 1rem;
+
+  &:hover {
+    opacity: 0.7;
+  }
 `

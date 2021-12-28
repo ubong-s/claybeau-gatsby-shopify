@@ -2,18 +2,26 @@ import React from "react"
 import styled from "styled-components"
 import { Navigation, CartBtn, MenuBtn, Logo, Container } from ".."
 import { useGlobalContext } from "../../context/globalContext"
+import { useStoreContext } from "../../context/storeContext"
 import { dimensions, theme, breakpoints } from "../../styles/globalStyle"
 
 export default function Header() {
-  const { menuOpen } = useGlobalContext()
+  const { menuOpen, closeCart, cartOpen } = useGlobalContext()
+  const { checkout, loading, didJustAddToCart } = useStoreContext()
+
+  const items = checkout ? checkout.lineItems : []
+
+  const quantity = items.reduce((total, item) => {
+    return total + item.quantity
+  }, 0)
 
   return (
     <HeaderWrap className={menuOpen && "active"}>
       <Container>
         <HeaderInner>
           <Logo />
-          <Navigation />
-          <CartBtn />
+          <Navigation onClick={closeCart} />
+          <CartBtn quantity={quantity} />
           <MenuBtn />
         </HeaderInner>
       </Container>
