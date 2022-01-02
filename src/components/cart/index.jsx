@@ -22,6 +22,7 @@ export default function Cart() {
         <CartEmpty>
           <h2>Your Cart is Empty</h2>
           <p>Visit our catalog to fill it up</p>
+          {/* eslint-disable */}
           <div onClick={closeCart}>
             <Button
               title="Catalog"
@@ -32,7 +33,9 @@ export default function Cart() {
         </CartEmpty>
       ) : (
         <CartInner>
-          <CartItemsWrap>
+          <CartItemsWrap
+            className={checkout.lineItems.length > 4 && "two-columns"}
+          >
             {checkout.lineItems.map(item => (
               <CartItem item={item} key={item.id} />
             ))}
@@ -77,13 +80,11 @@ export default function Cart() {
 const CartWrap = styled.div`
   position: fixed;
   top: ${dimensions.headerHeight.mobile};
-  bottom: 0;
   right: 0;
   width: 100%;
   height: 100%;
   background: ${theme.colors.white};
   z-index: 1000;
-  will-change: transform;
   transform: translateX(100%);
   transition: ${theme.misc.transitionEase};
   border-top: 2px solid ${theme.colors.primary};
@@ -104,10 +105,11 @@ const CartEmpty = styled.div`
   text-align: center;
 `
 const CartInner = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
   position: relative;
-  min-height: 100%;
+  min-height: 100vh;
   padding-bottom: 4rem;
 `
 
@@ -130,11 +132,12 @@ const CartItemsWrap = styled.div`
   gap: 1.25rem;
 `
 const CheckoutBtn = styled.button`
-  position: absolute;
-  padding: 0.75rem 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  /* position: absolute; */
+  padding: 0.75rem;
+  /* bottom: 0; */
+  /* left: 0; */
+  /* width: 100%; */
+  /* background: red; */
 
   &:hover {
     background: ${theme.colors.secondary};

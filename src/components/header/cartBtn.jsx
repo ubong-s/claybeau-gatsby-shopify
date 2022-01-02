@@ -1,5 +1,4 @@
 import React from "react"
-import { Link } from "gatsby"
 import { BsBagCheckFill } from "react-icons/bs"
 import { RiCloseCircleFill } from "react-icons/ri"
 import styled from "styled-components"
@@ -14,26 +13,19 @@ export default function CartBtn({ quantity }) {
       aria-label={`Shopping Cart with ${quantity} items`}
       onClick={toggleCart}
     >
-      <button type="button" className="small-btn">
-        <BsBagCheckFill />
-        {quantity > 0 && <div className="badge">{quantity}</div>}
-      </button>
+      {cartOpen ? (
+        <button type="button" className="small-btn">
+          <RiCloseCircleFill className="icon" />
+        </button>
+      ) : (
+        <button type="button" className="small-btn">
+          <BsBagCheckFill />
+          {quantity > 0 && <div className="badge">{quantity}</div>}
+        </button>
+      )}
     </CartBtnWrap>
   )
 }
-
-// {
-//   cartOpen ? (
-//     <button type="button" className="small-btn">
-//       <RiCloseCircleFill className="icon" />
-//     </button>
-//   ) : (
-//     <button type="button" className="small-btn">
-//       <BsBagCheckFill />
-//       {quantity > 0 && <div className="badge">{quantity}</div>}
-//     </button>
-//   )
-// }
 
 const CartBtnWrap = styled.div`
   button {

@@ -46,7 +46,6 @@ const HeroWrap = styled.section`
 
   @media screen and (min-width: ${breakpoints.desktop}px) {
     display: flex;
-
     align-items: center;
     padding: 0;
     text-align: unset;
@@ -75,6 +74,10 @@ const HeroContent = styled.div`
   margin: -10rem 1rem 0;
   padding: 3rem 1rem;
   z-index: 2;
+
+  p {
+    margin-bottom: 2rem;
+  }
 
   @media screen and (min-width: ${breakpoints.desktop}px) {
     padding: unset;

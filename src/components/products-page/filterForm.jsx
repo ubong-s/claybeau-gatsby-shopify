@@ -2,21 +2,19 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { ListGridToggle, Button } from ".."
 import { theme } from "../../styles/globalStyle"
-import { IoFilterSharp } from "react-icons/io5"
-import { FaCheck, FaChevronDown, FaChevronUp } from "react-icons/fa"
+import { FaCheck, FaChevronDown } from "react-icons/fa"
 import { breakpoints } from "../../styles/globalStyle"
 import { useFilterContext } from "../../context/filterContext"
 
-// get all unique values
-const getUnique = (items, value) => {
-  return [...new Set(items.map(item => item[value]))]
-}
-
 export default function FilterForm() {
-  const { allProducts, price, filters } = useFilterContext()
+  const {
+    allProducts,
+    filters: { collection, size, color, minPrice, maxPrice, price },
+    clearFilters,
+    updateFilters,
+  } = useFilterContext()
   const [toggleSizes, setToggleSizes] = useState(false)
   const [toggleColors, setToggleColors] = useState(false)
-  const { minPrice, maxPrice } = filters
 
   const controlSizes = () => {
     setToggleSizes(!toggleSizes)
@@ -26,10 +24,11 @@ export default function FilterForm() {
     setToggleColors(!toggleColors)
   }
 
-  const getUniqueVariant = (allProducts = allProducts, input) => {
+  const getUniqueVariant = (productsArr = [], input) => {
     return [
+      "All",
       ...new Set(
-        allProducts
+        productsArr
           .map(product =>
             product.variants.map(
               variant =>
@@ -53,10 +52,10 @@ export default function FilterForm() {
   ]
 
   // get unique sizes
-  const sizes = getUniqueVariant(allProducts, "size")
+  const allSizes = getUniqueVariant(allProducts, "size")
 
   // get unique colors
-  const colors = getUniqueVariant(allProducts, "color")
+  const allColors = getUniqueVariant(allProducts, "color")
 
   return (
     <FilterFormWrap>
@@ -66,12 +65,17 @@ export default function FilterForm() {
         <ListGridToggle />
       </MobileFilter>
       <DesktopFilter>
-        <Form>
+        <Form onSubmit={e => e.preventDefault()}>
           <FormGroup>
             <label htmlFor="collections" className="title">
               Collections
             </label>
-            <select name="collections" id="collections">
+            <select
+              name="collection"
+              id="collections"
+              onChange={updateFilters}
+              value={collection}
+            >
               {collections.map((item, index) => (
                 <option key={index} value={item}>
                   {item}
@@ -80,28 +84,18 @@ export default function FilterForm() {
             </select>
           </FormGroup>
           <FormGroup>
-            <div htmlFor="price" className="title">
+            <div className="title">
               Price
+              <small>${price}</small>
             </div>
             <div className="price">
               <input
-                type="number"
-                name="min-price"
-                id="min-price"
-                // onChange={updateFilters}
-                placeholder={minPrice}
-                value={minPrice}
+                type="range"
+                name="price"
+                onChange={updateFilters}
                 min={minPrice}
                 max={maxPrice}
-              />
-              {/* <div className="line"></div> */}
-              <input
-                type="number"
-                name="max-price"
-                id="max-price"
-                placeholder={maxPrice}
-                value={maxPrice}
-                max={maxPrice}
+                value={price}
               />
             </div>
           </FormGroup>
@@ -110,18 +104,41 @@ export default function FilterForm() {
               Sizes{" "}
               <span>
                 <FaChevronDown
-                  className="toggle-icon sizes"
+                  className={
+                    toggleSizes
+                      ? "toggle-icon sizes active"
+                      : "toggle-icon sizes"
+                  }
                   onClick={controlSizes}
                 />
               </span>
             </div>
             <div className="sizes">
-              {sizes.map((size, index) => {
+              {allSizes.map((s, index) => {
+                if (s === "All") {
+                  return (
+                    <button
+                      name="size"
+                      key={index}
+                      className={`${size === s ? "all-btn active" : "all-btn"}`}
+                      data-size="All"
+                      onClick={updateFilters}
+                    >
+                      all
+                    </button>
+                  )
+                }
+
                 return (
-                  <label htmlFor="sizes" key={index} className="checkbox-wrap">
-                    <input type="checkbox" value={size} />
-                    <span className="checkmark">{size}</span>
-                  </label>
+                  <button
+                    name="size"
+                    key={index}
+                    className={`${size === s ? "all-btn active" : "all-btn"}`}
+                    data-size={s}
+                    onClick={updateFilters}
+                  >
+                    {s}
+                  </button>
                 )
               })}
             </div>
@@ -131,29 +148,54 @@ export default function FilterForm() {
               Colors{" "}
               <span>
                 <FaChevronDown
-                  className="toggle-icon colors"
+                  className={
+                    toggleColors
+                      ? "toggle-icon colors active"
+                      : "toggle-icon colors"
+                  }
                   onClick={controlColors}
                 />
               </span>
             </div>
             <div className="colors">
-              {colors.map((color, index) => {
-                return (
-                  <label htmlFor="colors" key={index} className="checkbox-wrap">
-                    <input type="checkbox" value={color} />
-                    <span
-                      style={{ backgroundColor: `${color}` }}
-                      className="checkmark"
+              {allColors.map((c, index) => {
+                if (c === "All") {
+                  return (
+                    <button
+                      name="color"
+                      key={index}
+                      className={`${
+                        color === c ? "all-btn active" : "all-btn"
+                      }`}
+                      data-color="All"
+                      onClick={updateFilters}
                     >
-                      <FaCheck className="icon" />
-                    </span>
-                  </label>
+                      all
+                    </button>
+                  )
+                }
+
+                return (
+                  <button
+                    name="color"
+                    key={index}
+                    className={`${
+                      color === c ? "all-btn color-active" : "all-btn"
+                    }`}
+                    data-color={c}
+                    onClick={updateFilters}
+                    style={{ backgroundColor: c }}
+                  >
+                    {color === c ? <FaCheck className="icon" /> : null}
+                  </button>
                 )
               })}
             </div>
           </FormGroup>
         </Form>
-        <div>
+
+        {/* eslint-disable  */}
+        <div onClick={clearFilters}>
           <Button title="Clear Filters" />
         </div>
         <ListGridToggle />
@@ -240,6 +282,46 @@ const FormGroup = styled.div`
       &:hover {
         color: ${theme.colors.primary};
       }
+
+      &.active {
+        color: ${theme.colors.primary};
+      }
+    }
+  }
+
+  .all-btn {
+    display: block;
+    position: relative;
+    height: 2.3rem;
+    font-family: ${theme.fonts.secondary};
+    font-weight: ${theme.weights.bold};
+    border-radius: ${theme.roundings.medium};
+    border: ${theme.colors.gray3} 1px solid;
+    color: ${theme.colors.secondary};
+    background-color: ${theme.colors.gray1};
+    outline: none;
+    cursor: pointer;
+    transition: ${theme.misc.transitionEase};
+
+    &:hover {
+      color: ${theme.colors.white};
+      background-color: ${theme.colors.primary};
+      border: transparent;
+    }
+
+    &.active,
+    .color-active {
+      color: ${theme.colors.white};
+      background-color: ${theme.colors.primary};
+      border: transparent;
+    }
+
+    &.color-active {
+      border: ${theme.colors.primary} 2px solid;
+    }
+
+    .icon {
+      color: ${theme.colors.gray6};
     }
   }
 
@@ -251,7 +333,7 @@ const FormGroup = styled.div`
     padding: 0.4rem 1rem 0.4rem;
     outline: none;
     border-radius: ${theme.roundings.medium};
-    border: ${theme.colors.gray4} 2px solid;
+    border: ${theme.colors.primary} 1px solid;
     color: ${theme.colors.secondary};
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -267,72 +349,78 @@ const FormGroup = styled.div`
   /* Price styles */
   .price {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
     align-items: center;
+    height: 100%;
 
     input {
-      font-family: ${theme.fonts.secondary};
-      font-size: 1rem;
-      width: 100%;
-      height: 2.3rem;
-      border-radius: ${theme.roundings.medium};
-      color: ${theme.colors.secondary};
-      border: ${theme.colors.gray4} solid 2px;
-      padding: 0 0.5rem;
+      &[type="range"] {
+        -webkit-appearance: none;
+        margin: 18px 0;
+        width: 100%;
+
+        &:focus {
+          outline: none;
+
+          &::-webkit-slider-runnable-track {
+            background: ${theme.colors.secondary};
+          }
+          &::-moz-range-track {
+            background: ${theme.colors.secondary};
+          }
+
+          &::-webkit-slider-thumb {
+            border: 2px solid ${theme.colors.primary};
+          }
+
+          &::-moz-range-thumb {
+            border: 2px solid ${theme.colors.primary};
+          }
+        }
+
+        &::-webkit-slider-runnable-track {
+          width: 100%;
+          height: 1px;
+          cursor: pointer;
+          background: ${theme.colors.primary};
+          border: none;
+        }
+
+        &::-webkit-slider-thumb {
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          cursor: pointer;
+          background: ${theme.colors.white};
+          border: 2px solid ${theme.colors.secondary};
+          -webkit-appearance: none;
+          margin-top: -10px;
+        }
+        &::-moz-range-track {
+          width: 100%;
+          height: 1px;
+          cursor: pointer;
+          background: ${theme.colors.primary};
+          border: none;
+        }
+
+        &::-moz-range-thumb {
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          cursor: pointer;
+          margin-top: -10px;
+          background: ${theme.colors.white};
+          border: 2px solid ${theme.colors.secondary};
+        }
+      }
     }
   }
 
   /* Colors checkbox styles */
   .colors {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem 0.75rem;
-
-    .checkbox-wrap {
-      ​display: block;
-      position: relative;
-      height: 2.3rem;
-      cursor: pointer;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-      input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 100%;
-        width: 100%;
-        z-index: 1;
-
-        &:checked ~ .checkmark {
-          border: ${theme.colors.secondary} 1px solid;
-
-          .icon {
-            display: block;
-          }
-        }
-      }
-
-      .checkmark {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        border-radius: ${theme.roundings.medium};
-        border: ${theme.colors.gray3} 1px solid;
-
-        .icon {
-          display: none;
-        }
-      }
-    }
   }
 
   /* Sizes checkbox styles */
@@ -340,47 +428,5 @@ const FormGroup = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-
-    .checkbox-wrap {
-      ​display: block;
-      position: relative;
-      cursor: pointer;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      height: 2.3rem;
-      /* margin-bottom:1rem; */
-
-      input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 100%;
-        width: 100%;
-        z-index: 1;
-
-        &:checked ~ .checkmark {
-          background-color: ${theme.colors.primary};
-          color: ${theme.colors.white};
-          border: none;
-        }
-      }
-
-      .checkmark {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 2.3rem;
-        color: ${theme.colors.secondary};
-        border: ${theme.colors.gray4} solid 2px;
-        font-weight: ${theme.weights.bold};
-        border-radius: ${theme.roundings.medium};
-      }
-    }
   }
 `

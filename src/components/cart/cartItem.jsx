@@ -67,6 +67,7 @@ export default function CartItem({ item }) {
         width: 75,
         height: 75,
       }),
+    /* eslint-disable  */
     [variantImage.src]
   )
 

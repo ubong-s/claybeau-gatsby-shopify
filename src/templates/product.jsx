@@ -20,13 +20,10 @@ export default function Product({ data: { product } }) {
   const {
     title,
     description,
-    images,
     images: [firstImage],
-    productType,
     priceRangeV2,
     variants,
     variants: [initialVariant],
-    options,
   } = product
 
   const { client } = useStoreContext()
@@ -85,9 +82,7 @@ export default function Product({ data: { product } }) {
     variant.price
   )
 
-  const hasImages = images.length > 0
   const hasVariants = variants.length > 1
-  const hasMultipleImages = true || images.length > 1
 
   return (
     <Layout>

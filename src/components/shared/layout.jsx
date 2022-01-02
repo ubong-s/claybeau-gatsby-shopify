@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import { Header, Footer, Cart } from ".."
 import {
-  dimensions,
   GlobalStyle,
   theme,
   ThemeContext,
@@ -48,8 +47,8 @@ export default Layout
 
 const LayoutWrap = styled.div`
   &.opened {
-    height: 100vh;
-    overflow: scroll;
+    // height: 100vh;
+    // overflow: scroll;
   }
 `
 

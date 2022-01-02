@@ -1,7 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
 import { graphql } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
 import {
   FeaturedProducts,
   Hero,
@@ -9,6 +7,7 @@ import {
   Seo,
   Advantages,
   Testimonials,
+  Collections,
 } from "../components"
 
 const IndexPage = ({ data: { products } }) => {
@@ -16,6 +15,7 @@ const IndexPage = ({ data: { products } }) => {
     <Layout>
       <Seo title="Home" />
       <Hero />
+      <Collections />
       <Advantages />
       <FeaturedProducts products={products.nodes} />
       <Testimonials />

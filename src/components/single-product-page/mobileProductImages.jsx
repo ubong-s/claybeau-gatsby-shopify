@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { breakpoints, dimensions, theme } from "../../styles/globalStyle"
+import { breakpoints, theme } from "../../styles/globalStyle"
 import { GatsbyImage } from "gatsby-plugin-image"
-import { Link as ScrollLink } from "react-scroll"
 
 export default function MobileProductImages({ images, title }) {
   const [mainImage, setMainImage] = useState(0)
@@ -22,6 +21,7 @@ export default function MobileProductImages({ images, title }) {
 
       <ThumbnailImages>
         {images.map((image, index) => (
+          /* eslint-disable  */
           <li
             key={`product-image-${image.id}`}
             onClick={() => setMainImage(index)}

@@ -61,7 +61,7 @@ exports.createPages = async ({ graphql, actions }) => {
     }
     slug = slug.join("")
     createPage({
-      path: `/products/${slug}`,
+      path: `/products/collections/${slug}`,
       component: path.resolve(`./src/templates/collections.jsx`),
       context: {
         collection,

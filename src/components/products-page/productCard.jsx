@@ -43,6 +43,7 @@ const ProductWrap = styled(Link)`
   border-radius: ${theme.roundings.large};
   box-shadow: ${theme.misc.shadow};
   overflow: hidden;
+  transition: ${theme.misc.transitionEase};
 
   .gatsby-image {
     position: relative;
@@ -59,6 +60,15 @@ const ProductWrap = styled(Link)`
     }
   }
 
+  &:hover {
+    background: ${theme.colors.gray1};
+    box-shadow: none;
+
+    /* & > * {
+      color: ${theme.colors.white};
+    } */
+  }
+
   @media screen and (min-width: ${breakpoints.desktop}px) {
     &.list-view {
       grid-template-columns: 1fr 2fr;
@@ -71,13 +81,15 @@ const ProductInfo = styled.div`
 
   .title {
     font-size: ${theme.sizes.medium};
-    margin-bottom: 0.35rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
   }
 
   .description {
     display: none;
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
+    color: ${theme.colors.gray6};
   }
 
   .price {
@@ -98,7 +110,7 @@ const ProductInfo = styled.div`
   }
 
   @media screen and (min-width: ${breakpoints.desktop}px) {
-    padding: 1rem 1.25rem 1rem;
+    padding: 1.25rem 1.5rem;
 
     .title {
       font-size: ${theme.headings.large};

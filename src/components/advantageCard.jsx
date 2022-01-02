@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components"
+import { theme } from "../styles/globalStyle"
 
 export default function AdvantageCard({ advantage }) {
   return (
@@ -12,13 +13,13 @@ export default function AdvantageCard({ advantage }) {
 }
 
 const CardWrap = styled.div`
-  background: ${props => props.theme.secondaryColor};
-  color: ${props => props.theme.themeWhite};
+  background: ${theme.colors.white};
+  border-radius: ${theme.roundings.small};
   padding: 1.25rem;
 
   .icon {
     font-size: 2rem;
-    color: ${props => props.theme.primaryColor};
+    color: ${theme.colors.secondary};
   }
 
   h3 {
@@ -30,13 +31,7 @@ const CardWrap = styled.div`
     margin-bottom: 0;
   }
 
-  &:nth-of-type(even) {
-    background: ${props => props.theme.primaryColor};
-    color: ${props => props.theme.secondaryColor};
-
-    .icon {
-      color: ${props => props.theme.secondaryColor};
-    }
+  @media screen and (min-width: 1024px) {
+    padding: 1.75rem;
   }
-  /* background: ${props => props.theme.primaryColor}; */
 `

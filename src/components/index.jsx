@@ -29,6 +29,7 @@ import GoBackDesktop from "./single-product-page/gobackDesktop"
 import NumericInput from "./single-product-page/numericInput"
 import Cart from "./cart"
 import CartItem from "./cart/cartItem"
+import Collections from "./home-page/collections"
 
 export {
   Layout,
@@ -62,4 +63,5 @@ export {
   SearchForm,
   FilterForm,
   ListGridToggle,
+  Collections,
 }

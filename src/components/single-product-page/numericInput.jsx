@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md"
-import { theme, breakpoints, dimensions } from "../../styles/globalStyle"
+import { theme, breakpoints } from "../../styles/globalStyle"
 
 export default function NumericInput({
   availableQty,

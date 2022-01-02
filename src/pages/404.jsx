@@ -1,7 +1,7 @@
 import * as React from "react"
 import styled from "styled-components"
 import { Layout, Seo, Container, Button } from "../components"
-import { dimensions, theme } from "../styles/globalStyle"
+import { dimensions } from "../styles/globalStyle"
 
 const NotFoundPage = () => (
   <Layout>

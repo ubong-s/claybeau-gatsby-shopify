@@ -1,15 +1,25 @@
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useEffect, useReducer } from "react"
 import { useStaticQuery, graphql } from "gatsby"
+import reducer from "../reducers/filterReducer"
+import {
+  FETCH_PRODUCTS,
+  ACTIVATE_GRID_VIEW,
+  ACTIVATE_LIST_VIEW,
+  UPDATE_FILTERS,
+  FILTER_PRODUCTS,
+  CLEAR_FILTERS,
+} from "../actions"
 
-const initialValues = {
+const initialState = {
   loading: false,
   listView: false,
   allProducts: [],
   filteredProducts: [],
   filters: {
     search: "",
-    collection: "",
-    size: "",
+    collection: "All",
+    size: "All",
+    color: "All",
     maxPrice: 0,
     minPrice: 0,
     price: 0,
@@ -19,6 +29,7 @@ const initialValues = {
 const FilterContext = createContext()
 
 export const FilterProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState)
   const data = useStaticQuery(graphql`
     {
       products: allShopifyProduct {
@@ -47,74 +58,56 @@ export const FilterProvider = ({ children }) => {
     }
   `)
 
-  const products = data.products.nodes
-  let maxPrice = Math.max(
-    ...data.products.nodes.map(
-      price => price.priceRangeV2.maxVariantPrice.amount
-    )
-  )
-  const [productFilters, setProductFilters] = useState(initialValues)
-
-  console.log(maxPrice)
-
-  // fetch products
-  const fetchProducts = () => {
-    setProductFilters({
-      ...productFilters,
-      loading: true,
-      allProducts: products,
-      filteredProducts: products,
-      filters: {
-        ...productFilters.filters,
-        price: maxPrice,
-        maxPrice,
-      },
-      loading: false,
-    })
-  }
-
   // set List view
   const activateListView = () => {
-    setProductFilters({
-      ...productFilters,
-      listView: true,
-    })
+    dispatch({ type: ACTIVATE_LIST_VIEW })
   }
 
   // set Grid view
   const activateGridView = () => {
-    setProductFilters({
-      ...productFilters,
-      listView: false,
-    })
+    dispatch({ type: ACTIVATE_GRID_VIEW })
   }
 
-  // search products
-  const searchProducts = input => {
-    const tempProducts = productFilters.allProducts.filter(e =>
-      e.title.toLowerCase().includes(productFilters.search)
-    )
+  const updateFilters = e => {
+    let name = e.target.name
+    let value = e.target.value
 
-    setProductFilters({
-      ...productFilters,
-      loading: true,
-      search: input,
-      filteredProducts: tempProducts,
-      loading: false,
-    })
+    if (name === "price") {
+      value = Number(value)
+    }
+
+    if (name === "size") {
+      value = e.target.dataset.size
+    }
+
+    if (name === "color") {
+      value = e.target.dataset.color
+    }
+
+    dispatch({ type: UPDATE_FILTERS, payload: { name, value } })
+  }
+
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS })
   }
 
   useEffect(() => {
-    fetchProducts()
+    dispatch({ type: FETCH_PRODUCTS, payload: data.products.nodes })
+    /* eslint-disable */
   }, [])
+
+  useEffect(() => {
+    dispatch({ type: FILTER_PRODUCTS })
+  }, [state.allProducts, state.filters])
 
   return (
     <FilterContext.Provider
       value={{
-        ...productFilters,
-        searchProducts,
+        ...state,
         activateListView,
         activateGridView,
+        updateFilters,
+        clearFilters,
       }}
     >
       {children}

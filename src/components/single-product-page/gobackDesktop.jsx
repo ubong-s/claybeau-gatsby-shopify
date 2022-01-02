@@ -27,13 +27,14 @@ const Button = styled.button`
   padding: none;
   outline: none;
   border: none;
-  color: ${theme.colors.secondary};
+  color: ${theme.colors.primary};
   font-weight: ${theme.weights.semiBold};
   font-family: ${theme.fonts.secondary};
   transition: ${theme.misc.transitionEase};
   margin-bottom: 1rem;
+  background: transparent;
 
   &:hover {
-    opacity: 0.7;
+    color: ${theme.colors.secondary};
   }
 `

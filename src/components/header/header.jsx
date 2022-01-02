@@ -6,8 +6,8 @@ import { useStoreContext } from "../../context/storeContext"
 import { dimensions, theme, breakpoints } from "../../styles/globalStyle"
 
 export default function Header() {
-  const { menuOpen, closeCart, cartOpen } = useGlobalContext()
-  const { checkout, loading, didJustAddToCart } = useStoreContext()
+  const { menuOpen, closeCart } = useGlobalContext()
+  const { checkout } = useStoreContext()
 
   const items = checkout ? checkout.lineItems : []
 

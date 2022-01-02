@@ -37,7 +37,8 @@ export default function ProductDetails({
   useEffect(() => {
     if (quantity > availableQty) setQuantity(availableQty)
     if (quantity === 0 && availableQty > 0) setQuantity(1)
-  }, [availableQty])
+    /* eslint-disable */
+  }, [availableQty, quantity])
 
   return (
     <ProductContent>
@@ -94,7 +95,6 @@ export default function ProductDetails({
           increaseQty={increaseQty}
           decreaseQty={decreaseQty}
           onChange={event => setQuantity(event.currentTarget.value)}
-          value={quantity}
           min="1"
           max="20"
         />
@@ -129,10 +129,18 @@ const ProductContent = styled.div`
 
     h1 {
       font-size: ${theme.headings.large};
+      line-height: 1.1;
     }
 
     p {
       font-size: 1rem;
+    }
+  }
+
+  @media screen and (min-width: ${breakpoints.hd}px) {
+    h1 {
+      font-size: ${theme.headings.xlarge};
+      line-height: 1.1;
     }
   }
 `

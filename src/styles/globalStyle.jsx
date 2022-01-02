@@ -39,7 +39,8 @@ const theme = {
     normal: "20px",
     medium: "24px",
     large: "30px",
-    xlarge: "48px",
+    xlarge: "40px",
+    xxlarge: "48px",
   },
   roundings: {
     small: "2px",
@@ -96,7 +97,7 @@ const GlobalStyle = createGlobalStyle`
    }
    
    main {
-      min-height:calc(100vh - ${dimensions.headerHeight.desktop});
+      min-height:calc(100vh - ${dimensions.headerHeight.desktop}); 
    }
 
    img {
@@ -126,7 +127,7 @@ const GlobalStyle = createGlobalStyle`
       padding: 3rem 0;
       
       @media screen and (min-width:${breakpoints.desktop}px) {
-         padding: 4rem 0;
+         padding: 5rem 0;
       }
    }
 

@@ -6,10 +6,12 @@ import { useState } from "react"
 import { useFilterContext } from "../../context/filterContext"
 
 export default function SearchForm() {
-  const { searchProducts } = useFilterContext()
+  const {
+    filters: { search },
+    updateFilters,
+  } = useFilterContext()
 
   const [searchActive, setSearchActive] = useState(false)
-  const [formValue, setformValue] = useState(null)
 
   const openSearch = () => {
     setSearchActive(true)
@@ -22,13 +24,14 @@ export default function SearchForm() {
     <SearchFormWrap className={searchActive && "opened"}>
       <div className="label-wrap">
         <IoMdSearch className="icon search" onClick={openSearch} />
+        {/* eslint-disable */}
         <label
           htmlFor="search"
           onClick={openSearch}
-          className={formValue && !searchActive && "opened"}
+          className={search && !searchActive && "opened"}
         >
-          {formValue && !searchActive
-            ? `Search for "${formValue}"`
+          {search && !searchActive
+            ? `Search for "${search}"`
             : "Search something"}
         </label>
         <IoMdClose
@@ -41,10 +44,8 @@ export default function SearchForm() {
         name="search"
         placeholder="Search"
         className={searchActive ? "opened" : undefined}
-        onChange={e => {
-          setformValue(e.target.value)
-          searchProducts(e.target.value)
-        }}
+        value={search}
+        onChange={updateFilters}
       />
     </SearchFormWrap>
   )
