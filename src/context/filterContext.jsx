@@ -26,7 +26,7 @@ const initialState = {
   },
 }
 
-const FilterContext = createContext()
+const FilterContext = createContext(initialState)
 
 export const FilterProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)

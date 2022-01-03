@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react"
 import styled from "styled-components"
 import { Layout, Seo, Container, Button } from "../components"
 import { dimensions } from "../styles/globalStyle"

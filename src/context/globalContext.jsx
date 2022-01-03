@@ -1,35 +1,37 @@
-import React, { useState, createContext, useContext } from "react"
+import React, { createContext, useContext, useReducer } from "react"
+import reducer from "../reducers/globalReducer"
+import { TOGGLE_CART, TOGGLE_MENU, CLOSE_CART, CLOSE_MENU } from "../actions"
 
-const GlobalContext = createContext()
+const initialState = {
+  menuOpen: false,
+  cartOpen: false,
+}
+const GlobalContext = createContext(initialState)
 
 export const GlobalProvider = ({ children }) => {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [cartOpen, setCartOpen] = useState(false)
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen)
-    setCartOpen(false)
+    dispatch({ type: TOGGLE_MENU })
   }
 
   const closeMenu = () => {
-    setMenuOpen(false)
+    dispatch({ type: CLOSE_MENU })
   }
   const toggleCart = () => {
-    setCartOpen(!cartOpen)
-    setMenuOpen(false)
+    dispatch({ type: TOGGLE_CART })
   }
 
   const closeCart = () => {
-    setCartOpen(false)
+    dispatch({ type: CLOSE_CART })
   }
 
   return (
     <GlobalContext.Provider
       value={{
+        ...state,
         toggleMenu,
-        menuOpen,
         closeMenu,
-        cartOpen,
         toggleCart,
         closeCart,
       }}

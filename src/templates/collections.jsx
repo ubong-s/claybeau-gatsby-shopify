@@ -3,7 +3,6 @@ import { graphql } from "gatsby"
 import { Layout, ProductListing } from "../components"
 
 export default function Collections({ data: { products }, pageContext }) {
-  console.log(products)
   return (
     <Layout>
       <ProductListing products={products.nodes} />
